@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Would you like to go on a date with me?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            max-width: 90%;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            margin-bottom: 50px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .buttons {
+            position: relative;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        button {
+            padding: 20px 50px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s, box-shadow 0.1s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #yesBtn {
+            background-color: #4ade80;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background-color: #22c55e;
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.4);
+        }
+
+        #noBtn {
+            background-color: #f87171;
+            color: white;
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .success {
+            display: none;
+            text-align: center;
+            position: relative;
+        }
+
+        .success.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .hearts-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: rotate 8s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+        }
+
+        .heart:nth-child(1) { animation-delay: 0s; }
+        .heart:nth-child(2) { animation-delay: -1s; }
+        .heart:nth-child(3) { animation-delay: -2s; }
+        .heart:nth-child(4) { animation-delay: -3s; }
+        .heart:nth-child(5) { animation-delay: -4s; }
+        .heart:nth-child(6) { animation-delay: -5s; }
+        .heart:nth-child(7) { animation-delay: -6s; }
+        .heart:nth-child(8) { animation-delay: -7s; }
+
+        .success-content {
+            position: relative;
+            z-index: 100;
+            background: rgba(102, 126, 234, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .play-music-btn {
+            display: none;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background: #4ade80;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .play-music-btn:hover {
+            background: #22c55e;
+        }
+
+        .success h2 {
+            color: white;
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .success p {
+            color: white;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            line-height: 1.8;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
+            }
+        }
+
+        #youtube-player {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                height: 250px;
+            }
+            
+            button {
+                padding: 15px 35px;
+            }
+
+            .hearts-container {
+                width: 250px;
+                height: 250px;
+            }
+
+            .heart {
+                font-size: 1.8rem;
+            }
+
+            .success-content {
+                padding: 30px 20px;
+            }
+
+            @keyframes rotate {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg) translateX(130px) rotate(0deg);
+                }
+                100% {
+                    transform: translate(-50%, -50%) rotate(360deg) translateX(130px) rotate(-360deg);
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="question">
+            <h1>Would you like to go on a date with me?</h1>
+            <div class="buttons">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div class="success" id="success">
+            <div class="hearts-container">
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+                <div class="heart">❤️</div>
+            </div>
+            <div class="success-content">
+                <h2>GRAÇAS A DEUS!!! OBRIGADO! 🎉</h2>
+                <p><strong>Rua Tivoli 24, Jardim Itália</strong></p>
+                <p style="margin-top: 20px;">Meu número para mais informações:</p>
+                <p><strong>65 99255-6938</strong></p>
+                <button class="play-music-btn" id="playMusicBtn">🎵 Tocar Música</button>
+            </div>
+        </div>
+        
+        <div id="youtube-player" style="position: fixed; top: -1000px; left: -1000px;"></div>
+    </div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const question = document.getElementById('question');
+        const success = document.getElementById('success');
+        const playMusicBtn = document.getElementById('playMusicBtn');
+
+        const noTexts = [
+            'Não',
+            'Tem certeza?',
+            'Não me estressa',
+            'Pensa melhor',
+            'Desiste',
+            'Sério mesmo?',
+            'Última chance',
+            'Para com isso',
+            'Clica no SIM',
+            'Vai...'
+        ];
+
+        let noIndex = 0;
+        let player;
+        let playerReady = false;
+
+        // Inicializa o player do YouTube
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '1',
+                width: '1',
+                videoId: 'izGwDsrQ1eQ',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'start': 160,
+                    'end': 195,
+                    'enablejsapi': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            playerReady = true;
+        }
+
+        function onPlayerStateChange(event) {
+            // Quando o vídeo terminar, para
+            if (event.data == YT.PlayerState.ENDED) {
+                player.stopVideo();
+            }
+        }
+
+        function moveButton() {
+            const container = document.querySelector('.buttons');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - noBtn.offsetWidth - 20;
+            const maxY = containerRect.height - noBtn.offsetHeight - 20;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            
+            noIndex = (noIndex + 1) % noTexts.length;
+            noBtn.textContent = noTexts[noIndex];
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        function playMusic() {
+            if (playerReady && player && player.playVideo) {
+                player.playVideo();
+                playMusicBtn.style.display = 'none';
+            } else {
+                // Se o player não estiver pronto, mostra o botão
+                playMusicBtn.style.display = 'inline-block';
+            }
+        }
+
+        yesBtn.addEventListener('click', () => {
+            question.style.display = 'none';
+            success.classList.add('show');
+            
+            // Aguarda 500ms para garantir que o player está pronto
+            setTimeout(() => {
+                playMusic();
+                
+                // Se não funcionar, mostra o botão após 1.5 segundos
+                setTimeout(() => {
+                    if (player && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                        playMusicBtn.style.display = 'inline-block';
+                    }
+                }, 1500);
+            }, 500);
+        });
+
+        // Botão manual para tocar música
+        playMusicBtn.addEventListener('click', playMusic);
+    </script>
+</body>
+</html>
