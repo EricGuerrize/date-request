@@ -71,7 +71,7 @@
         #noBtn {
             background-color: #f87171;
             color: white;
-            position: absolute;
+            position: fixed; /* livre pela tela */
             transition: all 0.3s ease;
         }
 
@@ -160,18 +160,19 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* Aumentando o diâmetro da órbita dos corações */
         @keyframes rotate {
             0% {
-                transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
+                transform: translate(-50%, -50%) rotate(0deg) translateX(300px) rotate(0deg);
             }
             100% {
-                transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
+                transform: translate(-50%, -50%) rotate(360deg) translateX(300px) rotate(-360deg);
             }
         }
 
         @media (max-width: 600px) {
             .buttons {
-                height: 250px;
+                height: 450px;
             }
             
             button {
@@ -193,10 +194,10 @@
 
             @keyframes rotate {
                 0% {
-                    transform: translate(-50%, -50%) rotate(0deg) translateX(130px) rotate(0deg);
+                    transform: translate(-50%, -50%) rotate(0deg) translateX(200px) rotate(0deg);
                 }
                 100% {
-                    transform: translate(-50%, -50%) rotate(360deg) translateX(130px) rotate(-360deg);
+                    transform: translate(-50%, -50%) rotate(360deg) translateX(200px) rotate(-360deg);
                 }
             }
         }
@@ -261,29 +262,34 @@
         let noIndex = 0;
 
         function moveButton() {
-            const container = document.querySelector('.buttons');
-            const containerRect = container.getBoundingClientRect();
-            
-            const maxX = containerRect.width - noBtn.offsetWidth - 20;
-            const maxY = containerRect.height - noBtn.offsetHeight - 20;
-            
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-            
+            // limites da tela
+            const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+
+            // posição aleatória
+            let randomX = Math.random() * maxX;
+            let randomY = Math.random() * maxY;
+
+            // deslocamento extra para "fugir mais longe"
+            randomX += (Math.random() - 0.5) * 300; 
+            randomY += (Math.random() - 0.5) * 300;
+
+            // manter dentro da tela
+            randomX = Math.max(0, Math.min(randomX, maxX));
+            randomY = Math.max(0, Math.min(randomY, maxY));
+
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
-            
+
             noIndex = (noIndex + 1) % noTexts.length;
             noBtn.textContent = noTexts[noIndex];
         }
 
         noBtn.addEventListener('mouseover', moveButton);
-
         noBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             moveButton();
         });
-
         noBtn.addEventListener('click', (e) => {
             e.preventDefault();
             moveButton();
@@ -303,12 +309,9 @@
         yesBtn.addEventListener('click', () => {
             question.style.display = 'none';
             success.classList.add('show');
-            
-            // Tenta tocar automaticamente
             playMusic();
         });
 
-        // Botão manual para tocar música
         playMusicBtn.addEventListener('click', playMusic);
     </script>
 </body>
