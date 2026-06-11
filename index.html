@@ -241,10 +241,10 @@
 <body>
     <div class="container">
         <div id="question">
-            <h1>Você aceita um datezinho cmg?</h1>
+            <h1>Letícia, você aceita um datezinho cmg?</h1>
             <div class="buttons">
-                <button id="yesBtn">Yes</button>
-                <button id="noBtn">No</button>
+                <button id="yesBtn">Sim</button>
+                <button id="noBtn">Não</button>
             </div>
         </div>
 
@@ -304,15 +304,19 @@
 
         const noTexts = [
             'Não',
-            'Tem certeza?',
-            'Não me estressa',
-            'Pensa melhor',
-            'Desiste',
-            'Sério mesmo?',
-            'Última chance',
-            'Para com isso',
-            'Clica no SIM',
-            'Vai...'
+            'Certeza absoluta?',
+            'Aperta o verde, vai...',
+            'Tá com dedo torto?',
+            'Eu sou um partidão, pensa bem',
+            'Nossa, que frieza...',
+            'Vai me dar bolo mesmo?',
+            'Cuidado, botão amaldiçoado',
+            'Se clicar de novo a tela trava',
+            'Tô chorando já 😭',
+            'Letícia, não faz isso comigo!',
+            'Só aceito o botão do lado',
+            'Botão em manutenção 🛠️',
+            'Eita como é difícil...'
         ];
 
         let noIndex = 0;
@@ -376,7 +380,7 @@
             audio.pause();
             audio.currentTime = 0;
             noBtn.removeAttribute('style');
-            noBtn.textContent = 'No';
+            noBtn.textContent = 'Não';
             noIndex = 0;
         });
 
