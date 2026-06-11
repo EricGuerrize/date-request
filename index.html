@@ -141,6 +141,18 @@
             background: #22c55e;
         }
 
+        .options-container label {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .options-container input[type="radio"] {
+            transform: scale(1.2);
+        }
+
         .success h2 {
             color: white;
             font-size: clamp(1.8rem, 6vw, 3.5rem);
@@ -226,10 +238,28 @@
             </div>
             <div class="success-content">
                 <h2>GRAÇAS A DEUS!!! OBRIGADO! 🎉</h2>
-                <p><strong>📍Quando voce chegar em Cuiabá!!!📍</strong></p>
-                <p style="margin-top: 20px;">Para mais informações, entre em contato com o numero abaixo:</p>
-                <p><strong>65 99255-6938</strong></p>
-                <button class="play-music-btn" id="playMusicBtn">🎵 Tocar Música</button>
+                
+                <div class="options-container" style="margin-top: 20px; text-align: left; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                    <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Escolha o que vamos fazer:</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; color: white;">
+                        <label><input type="radio" name="food" value="Massa"> 🍝 Massa</label>
+                        <label><input type="radio" name="food" value="Japonês"> 🍣 Japonês</label>
+                        <label><input type="radio" name="food" value="Carne"> 🥩 Carne</label>
+                        <label><input type="radio" name="food" value="Corrida"> 🏃‍♂️ Corrida</label>
+                        <label><input type="radio" name="food" value="Assistir F1"> 🏎️ Assistir F1</label>
+                        <label><input type="radio" name="food" value="Passeio com o dog"> 🐕 Passeio com o dog</label>
+                    </div>
+
+                    <h3 style="color: white; margin-top: 15px; margin-bottom: 10px; font-size: 1.2rem;">Escolha a data (Junho/Julho):</h3>
+                    <input type="date" id="datePicker" min="2024-06-01" max="2024-07-31" style="padding: 8px; border-radius: 5px; border: none; width: 100%; font-family: inherit;">
+                </div>
+
+                <button id="whatsappBtn" style="margin-top: 20px; padding: 15px 30px; background: #25D366; color: white; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; font-weight: bold; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">📱 Confirmar no WhatsApp</button>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="play-music-btn" id="playMusicBtn" style="flex: 1; margin-top: 0; padding: 10px; font-size: 1rem;">🎵 Música</button>
+                    <button id="backBtn" style="flex: 1; padding: 10px; background: #f87171; color: white; border: none; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">Voltar</button>
+                </div>
             </div>
         </div>
         
@@ -245,6 +275,9 @@
         const success = document.getElementById('success');
         const playMusicBtn = document.getElementById('playMusicBtn');
         const audio = document.getElementById('backgroundMusic');
+        const backBtn = document.getElementById('backBtn');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const datePicker = document.getElementById('datePicker');
 
         const noTexts = [
             'Não',
@@ -313,6 +346,33 @@
         });
 
         playMusicBtn.addEventListener('click', playMusic);
+
+        backBtn.addEventListener('click', () => {
+            success.classList.remove('show');
+            question.style.display = 'block';
+            audio.pause();
+            audio.currentTime = 0;
+            noBtn.removeAttribute('style');
+            noBtn.textContent = 'No';
+            noIndex = 0;
+        });
+
+        whatsappBtn.addEventListener('click', () => {
+            const selectedFood = document.querySelector('input[name="food"]:checked');
+            const selectedDate = datePicker.value;
+            
+            let message = "Oii! Aceito o datezinho! 🥰";
+            if (selectedFood) {
+                message += `\nQuero: ${selectedFood.value}`;
+            }
+            if (selectedDate) {
+                const [year, month, day] = selectedDate.split('-');
+                message += `\nNa data: ${day}/${month}/${year}`;
+            }
+            
+            const whatsappUrl = `https://wa.me/5565992556938?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
     </script>
 </body>
 </html>
