@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Datezinho?????</title>
     <style>
         * {
@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .container {
@@ -74,8 +74,15 @@
         #noBtn {
             background-color: #f87171;
             color: white;
-            position: fixed; /* livre pela tela */
-            transition: all 0.3s ease;
+            position: fixed;
+            z-index: 9999;
+            max-width: calc(100dvw - 24px);
+            padding: 14px 18px;
+            font-size: clamp(0.95rem, 3.5vw, 1.4rem);
+            line-height: 1.25;
+            white-space: normal;
+            word-break: break-word;
+            transition: left 0.25s ease, top 0.25s ease;
         }
 
         .success {
@@ -124,6 +131,8 @@
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 420px;
+            margin: 0 auto;
         }
 
         .play-music-btn {
@@ -144,16 +153,87 @@
             background: #22c55e;
         }
 
-        .options-container label {
-            font-size: clamp(0.9rem, 4vw, 1.1rem);
-            cursor: pointer;
+        .options-container {
+            margin-top: 20px;
+            text-align: left;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .options-container h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .options-container h3 + h3,
+        .options-container .section-title {
+            margin-top: 18px;
+        }
+
+        .cinema-option {
+            color: white;
+            font-size: clamp(0.95rem, 4vw, 1.15rem);
             display: flex;
             align-items: center;
             gap: 10px;
+            background: rgba(255,255,255,0.12);
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.35);
         }
 
-        .options-container input[type="radio"] {
-            transform: scale(1.2);
+        .day-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .day-btn {
+            flex: 1;
+            min-width: 90px;
+            padding: 12px 10px;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.25);
+            box-shadow: none;
+        }
+
+        .day-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        .day-btn.selected {
+            background: #4ade80;
+            border-color: #22c55e;
+            color: white;
+        }
+
+        .time-box {
+            margin-top: 8px;
+            color: white;
+            background: rgba(255,255,255,0.12);
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .time-box strong {
+            font-size: 1.4rem;
+        }
+
+        .suggestion-box {
+            width: 100%;
+            margin-top: 8px;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 44px;
         }
 
         .success h2 {
@@ -168,6 +248,14 @@
             font-size: clamp(1rem, 3vw, 1.5rem);
             line-height: 1.8;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        #ytPlayer {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
         }
 
         @keyframes float {
@@ -195,7 +283,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* Aumentando o diâmetro da órbita dos corações */
         @keyframes rotate {
             0% {
                 transform: translate(-50%, -50%) rotate(0deg) translateX(300px) rotate(0deg);
@@ -241,7 +328,7 @@
 <body>
     <div class="container">
         <div id="question">
-            <h1>Letícia, você aceita um datezinho cmg?</h1>
+            <h1>Brenda, você aceita um datezinho cmg?</h1>
             <div class="buttons">
                 <button id="yesBtn">Sim</button>
                 <button id="noBtn">Não</button>
@@ -262,20 +349,17 @@
             <div class="success-content">
                 <h2>GRAÇAS A DEUS!!! OBRIGADO! 🎉</h2>
                 
-                <div class="options-container" style="margin-top: 20px; text-align: left; background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 1.2rem;">Tem alguma prefernecia</h3>
-                    <div style="display: flex; flex-direction: column; gap: 8px; color: white;">
-                        <label><input type="radio" name="food" value="Massa"> 🍝 Massa</label>
-                        <label><input type="radio" name="food" value="Japonês"> 🍣 Japonês</label>
-                        <label><input type="radio" name="food" value="Carne"> 🥩 Carne</label>
-                        <label><input type="radio" name="food" value="Corrida"> 🏃‍♂️ Corrida</label>
-                        <label><input type="radio" name="food" value="F1 🌿"> F1 🌿</label>
-                        <label><input type="radio" name="food" value="Passeio com o dog"> 🐕 Passeio com o dog</label>
-                        <label><input type="radio" name="food" value="Me surpreenda ai neguinho"> 🤔 Me surpreenda ai neguinho</label>
-                    </div>
+                <div class="options-container">
+                    <h3>O date</h3>
+                    <div class="cinema-option">🎬 Cinema — Homem-Aranha</div>
 
-                    <h3 style="color: white; margin-top: 15px; margin-bottom: 10px; font-size: 1.2rem;">Escolha a data (Junho/Julho):</h3>
-                    <input type="date" id="datePicker" min="2024-06-01" max="2024-07-31" style="padding: 8px; border-radius: 5px; border: none; width: 100%; font-family: inherit;">
+                    <h3 class="section-title">Escolhe o dia:</h3>
+                    <div class="day-options" id="dayOptions"></div>
+
+                    <h3 class="section-title">Horário</h3>
+                    <div class="time-box">⏰ <strong>21:00</strong></div>
+                    <label for="timeSuggestion" style="display:block; color:white; margin-top:12px; font-size:0.95rem;">Sugestão de horário (se quiser outro):</label>
+                    <input type="text" id="timeSuggestion" class="suggestion-box" placeholder="Ex: 20:30, 22h...">
                 </div>
 
                 <button id="whatsappBtn" style="margin-top: 20px; padding: 15px 30px; background: #25D366; color: white; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; font-weight: bold; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">📱 Confirmar no WhatsApp</button>
@@ -286,10 +370,8 @@
                 </div>
             </div>
         </div>
-        
-        <audio id="backgroundMusic" preload="auto">
-            <source src="musica.mp3" type="audio/mpeg">
-        </audio>
+
+        <div id="ytPlayer"></div>
     </div>
 
     <script>
@@ -298,10 +380,16 @@
         const question = document.getElementById('question');
         const success = document.getElementById('success');
         const playMusicBtn = document.getElementById('playMusicBtn');
-        const audio = document.getElementById('backgroundMusic');
         const backBtn = document.getElementById('backBtn');
         const whatsappBtn = document.getElementById('whatsappBtn');
-        const datePicker = document.getElementById('datePicker');
+        const dayOptions = document.getElementById('dayOptions');
+        const timeSuggestion = document.getElementById('timeSuggestion');
+
+        const THEME_VIDEO_ID = 'Xke6p-LJSlY';
+        let ytPlayer = null;
+        let ytApiReady = false;
+        let pendingPlay = false;
+        let selectedDay = null;
 
         const noTexts = [
             'Não',
@@ -314,7 +402,7 @@
             'Cuidado, botão amaldiçoado',
             'Se clicar de novo a tela trava',
             'Tô chorando já 😭',
-            'Letícia, não faz isso comigo!',
+            'Brenda, não faz isso comigo!',
             'Só aceito o botão do lado',
             'Botão em manutenção 🛠️',
             'Eita como é difícil...'
@@ -322,49 +410,177 @@
 
         let noIndex = 0;
 
-        function moveButton() {
-            // limites da tela
-            const maxX = window.innerWidth - noBtn.offsetWidth - 40;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 40;
-
-            // posição aleatória
-            let randomX = Math.random() * maxX;
-            let randomY = Math.random() * maxY;
-
-            // deslocamento extra para "fugir mais longe"
-            randomX += (Math.random() - 0.5) * 300; 
-            randomY += (Math.random() - 0.5) * 300;
-
-            // manter dentro da tela
-            randomX = Math.max(0, Math.min(randomX, maxX));
-            randomY = Math.max(0, Math.min(randomY, maxY));
-
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-
-            noIndex = (noIndex + 1) % noTexts.length;
-            noBtn.textContent = noTexts[noIndex];
+        function nextWeekday(targetDay) {
+            const today = new Date();
+            const result = new Date(today);
+            result.setHours(0, 0, 0, 0);
+            const current = today.getDay();
+            let diff = targetDay - current;
+            if (diff <= 0) diff += 7;
+            result.setDate(today.getDate() + diff);
+            return result;
         }
 
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            moveButton();
-        });
-        noBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            moveButton();
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            return `${day}/${month}`;
+        }
+
+        const days = [
+            { name: 'Sexta', weekday: 5 },
+            { name: 'Sábado', weekday: 6 },
+            { name: 'Domingo', weekday: 0 }
+        ].map((day) => {
+            const date = nextWeekday(day.weekday);
+            return {
+                ...day,
+                date,
+                label: `${day.name}\n${formatDate(date)}`,
+                value: `${day.name} ${formatDate(date)}`
+            };
         });
 
+        days.forEach((day) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'day-btn';
+            btn.textContent = day.label.replace('\n', ' · ');
+            btn.addEventListener('click', () => {
+                selectedDay = day;
+                document.querySelectorAll('.day-btn').forEach((el) => el.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+            dayOptions.appendChild(btn);
+        });
+
+        function getVisibleArea() {
+            const vv = window.visualViewport;
+            if (vv) {
+                return {
+                    left: vv.offsetLeft,
+                    top: vv.offsetTop,
+                    width: vv.width,
+                    height: vv.height
+                };
+            }
+            return {
+                left: 0,
+                top: 0,
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
+        }
+
+        function keepNoButtonOnScreen(x, y) {
+            const margin = 12;
+            const view = getVisibleArea();
+            const btnW = noBtn.offsetWidth;
+            const btnH = noBtn.offsetHeight;
+            const minX = view.left + margin;
+            const minY = view.top + margin;
+            const maxX = view.left + view.width - btnW - margin;
+            const maxY = view.top + view.height - btnH - margin;
+
+            const clampedX = maxX < minX ? minX : Math.min(Math.max(x, minX), maxX);
+            const clampedY = maxY < minY ? minY : Math.min(Math.max(y, minY), maxY);
+
+            noBtn.style.left = clampedX + 'px';
+            noBtn.style.top = clampedY + 'px';
+        }
+
+        function moveButton() {
+            noIndex = (noIndex + 1) % noTexts.length;
+            noBtn.textContent = noTexts[noIndex];
+
+            const view = getVisibleArea();
+            const margin = 12;
+            const maxX = Math.max(margin, view.width - noBtn.offsetWidth - margin);
+            const maxY = Math.max(margin, view.height - noBtn.offsetHeight - margin);
+
+            const randomX = view.left + margin + Math.random() * Math.max(0, maxX - margin);
+            const randomY = view.top + margin + Math.random() * Math.max(0, maxY - margin);
+
+            keepNoButtonOnScreen(randomX, randomY);
+        }
+
+        let lastMove = 0;
+        function handleNoMove(e) {
+            e.preventDefault();
+            const now = Date.now();
+            if (now - lastMove < 280) return;
+            lastMove = now;
+            moveButton();
+        }
+
+        noBtn.addEventListener('mouseover', handleNoMove);
+        noBtn.addEventListener('touchstart', handleNoMove, { passive: false });
+        noBtn.addEventListener('click', handleNoMove);
+
+        window.addEventListener('resize', () => {
+            if (noBtn.style.left) {
+                keepNoButtonOnScreen(parseFloat(noBtn.style.left), parseFloat(noBtn.style.top));
+            }
+        });
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                if (noBtn.style.left) {
+                    keepNoButtonOnScreen(parseFloat(noBtn.style.left), parseFloat(noBtn.style.top));
+                }
+            });
+        }
+
+        window.onYouTubeIframeAPIReady = function () {
+            ytApiReady = true;
+            ytPlayer = new YT.Player('ytPlayer', {
+                height: '1',
+                width: '1',
+                videoId: THEME_VIDEO_ID,
+                playerVars: {
+                    autoplay: 0,
+                    loop: 1,
+                    playlist: THEME_VIDEO_ID,
+                    controls: 0
+                },
+                events: {
+                    onReady: () => {
+                        if (pendingPlay) playMusic();
+                    }
+                }
+            });
+        };
+
         function playMusic() {
-            audio.play()
+            pendingPlay = true;
+            if (!ytPlayer || typeof ytPlayer.playVideo !== 'function') {
+                playMusicBtn.style.display = 'inline-block';
+                return;
+            }
+
+            const result = ytPlayer.playVideo();
+            Promise.resolve(result)
                 .then(() => {
                     playMusicBtn.style.display = 'none';
                 })
-                .catch((error) => {
-                    console.log('Autoplay bloqueado:', error);
+                .catch(() => {
                     playMusicBtn.style.display = 'inline-block';
                 });
+
+            setTimeout(() => {
+                const state = ytPlayer.getPlayerState && ytPlayer.getPlayerState();
+                if (state !== 1) {
+                    playMusicBtn.style.display = 'inline-block';
+                } else {
+                    playMusicBtn.style.display = 'none';
+                }
+            }, 800);
+        }
+
+        function stopMusic() {
+            pendingPlay = false;
+            if (ytPlayer && typeof ytPlayer.stopVideo === 'function') {
+                ytPlayer.stopVideo();
+            }
         }
 
         yesBtn.addEventListener('click', () => {
@@ -378,29 +594,34 @@
         backBtn.addEventListener('click', () => {
             success.classList.remove('show');
             question.style.display = 'block';
-            audio.pause();
-            audio.currentTime = 0;
+            stopMusic();
             noBtn.removeAttribute('style');
             noBtn.textContent = 'Não';
             noIndex = 0;
         });
 
         whatsappBtn.addEventListener('click', () => {
-            const selectedFood = document.querySelector('input[name="food"]:checked');
-            const selectedDate = datePicker.value;
-            
             let message = "Oii! Aceito o datezinho! 🥰";
-            if (selectedFood) {
-                message += `\nQuero: ${selectedFood.value}`;
+            message += "\nQuero: Cinema — Homem-Aranha";
+
+            if (selectedDay) {
+                message += `\nNo dia: ${selectedDay.value}`;
             }
-            if (selectedDate) {
-                const [year, month, day] = selectedDate.split('-');
-                message += `\nNa data: ${day}/${month}/${year}`;
+
+            message += "\nHorário: 21:00";
+
+            const suggestion = timeSuggestion.value.trim();
+            if (suggestion) {
+                message += `\nSugestão de horário: ${suggestion}`;
             }
-            
+
             const whatsappUrl = `https://wa.me/5565992556938?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
         });
+
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
     </script>
 </body>
 </html>
