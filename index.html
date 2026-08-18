@@ -238,9 +238,16 @@
 
         .success h2 {
             color: white;
-            font-size: clamp(1.8rem, 6vw, 3.5rem);
-            margin-bottom: 30px;
+            font-size: clamp(1.8rem, 6vw, 3.2rem);
+            margin-bottom: 8px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .confirm-time {
+            color: rgba(255,255,255,0.95);
+            font-size: clamp(0.95rem, 3vw, 1.15rem) !important;
+            margin-bottom: 18px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .success p {
@@ -328,7 +335,7 @@
 <body>
     <div class="container">
         <div id="question">
-            <h1>Brenda, você aceita um datezinho cmg?</h1>
+            <h1>Proposta de date, aceita??</h1>
             <div class="buttons">
                 <button id="yesBtn">Sim</button>
                 <button id="noBtn">Não</button>
@@ -347,11 +354,14 @@
                 <div class="heart">❤️</div>
             </div>
             <div class="success-content">
-                <h2>GRAÇAS A DEUS!!! OBRIGADO! 🎉</h2>
+                <h2>Date aceito!!</h2>
+                <p class="confirm-time" id="confirmTime"></p>
                 
                 <div class="options-container">
                     <h3>O date</h3>
                     <div class="cinema-option">🎬 Cinema — Homem-Aranha</div>
+                    <label for="planSuggestion" style="display:block; color:white; margin-top:12px; font-size:0.95rem;">Quer sugerir outra coisa?</label>
+                    <input type="text" id="planSuggestion" class="suggestion-box" placeholder="Ex: jantar, parque...">
 
                     <h3 class="section-title">Escolhe o dia:</h3>
                     <div class="day-options" id="dayOptions"></div>
@@ -384,8 +394,11 @@
         const whatsappBtn = document.getElementById('whatsappBtn');
         const dayOptions = document.getElementById('dayOptions');
         const timeSuggestion = document.getElementById('timeSuggestion');
+        const planSuggestion = document.getElementById('planSuggestion');
+        const confirmTime = document.getElementById('confirmTime');
 
         const THEME_VIDEO_ID = 'Xke6p-LJSlY';
+        const THEME_START = 42;
         let ytPlayer = null;
         let ytApiReady = false;
         let pendingPlay = false;
@@ -538,13 +551,18 @@
                 videoId: THEME_VIDEO_ID,
                 playerVars: {
                     autoplay: 0,
-                    loop: 1,
-                    playlist: THEME_VIDEO_ID,
+                    start: THEME_START,
                     controls: 0
                 },
                 events: {
                     onReady: () => {
                         if (pendingPlay) playMusic();
+                    },
+                    onStateChange: (event) => {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            ytPlayer.seekTo(THEME_START, true);
+                            ytPlayer.playVideo();
+                        }
                     }
                 }
             });
@@ -557,6 +575,9 @@
                 return;
             }
 
+            if (typeof ytPlayer.seekTo === 'function') {
+                ytPlayer.seekTo(THEME_START, true);
+            }
             const result = ytPlayer.playVideo();
             Promise.resolve(result)
                 .then(() => {
@@ -583,9 +604,18 @@
             }
         }
 
+        function formatConfirmTime(date) {
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            return `Confirmado às ${hours}:${minutes} · ${day}/${month}`;
+        }
+
         yesBtn.addEventListener('click', () => {
             question.style.display = 'none';
             success.classList.add('show');
+            confirmTime.textContent = formatConfirmTime(new Date());
             playMusic();
         });
 
@@ -604,6 +634,11 @@
             let message = "Oii! Aceito o datezinho! 🥰";
             message += "\nQuero: Cinema — Homem-Aranha";
 
+            const otherPlan = planSuggestion.value.trim();
+            if (otherPlan) {
+                message += `\nSugestão de date: ${otherPlan}`;
+            }
+
             if (selectedDay) {
                 message += `\nNo dia: ${selectedDay.value}`;
             }
@@ -613,6 +648,10 @@
             const suggestion = timeSuggestion.value.trim();
             if (suggestion) {
                 message += `\nSugestão de horário: ${suggestion}`;
+            }
+
+            if (confirmTime.textContent) {
+                message += `\n${confirmTime.textContent}`;
             }
 
             const whatsappUrl = `https://wa.me/5565992556938?text=${encodeURIComponent(message)}`;
